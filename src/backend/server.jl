@@ -2,21 +2,85 @@
 
 include("console.jl")
 
-const LAST_HEN = Ref{EI.HeatExchangerNetwork}()
+const hen_store = Dict{String,Tuple{EI.HeatExchangerNetwork,Float64}}()
+const hen_lock = ReentrantLock()
+const hen_ttl_s = 6 * 60 * 60.0
+const frontend_mounted = Ref(false)
+const frontend_dist_dir = Ref{Union{Nothing,String}}(nothing)
+
+function mount_frontend!(dist_dir::AbstractString)
+    frontend_mounted[] && return
+    isdir(dist_dir) || throw(ArgumentError("Web UI dist directory not found: $(dist_dir)"))
+    assets_dir = joinpath(dist_dir, "assets")
+    isdir(assets_dir) && staticfiles(assets_dir, "assets")
+    frontend_dist_dir[] = dist_dir
+    frontend_mounted[] = true
+    nothing
+end
+
+function frontend_file(path::AbstractString)
+    dist_dir = frontend_dist_dir[]
+    dist_dir === nothing && return HTTP.Response(503, "Web UI not configured.")
+    file_path = joinpath(dist_dir, path)
+    isfile(file_path) || return HTTP.Response(404, "Not Found")
+    return file(file_path)
+end
+
+@get "/" () -> frontend_file("index.html")
+@get "/vite.svg" () -> frontend_file("vite.svg")
+@get "/favicon.svg" () -> frontend_file("favicon.svg")
+@get "/favicon.ico" () -> frontend_file("favicon.ico")
 
 function plot_payload_from_plot(p)
     return Dict(
         "data" => getfield(p, :data),
         "layout" => getfield(p, :layout),
-        "config" => getfield(p, :config),
-    )
+        "config" => getfield(p, :config))
 end
 
-const STREAMSETS_DIR = joinpath(@__DIR__, "data", "streamsets")
-mkpath(STREAMSETS_DIR)
+const streamsets_dir = joinpath(@__DIR__, "data", "streamsets")
+mkpath(streamsets_dir)
 
 function iso_ts()
     return Dates.format(now(UTC), dateformat"yyyy-mm-ddTHH:MM:SS.sssZ")
+end
+
+function _purge_expired_hens!()
+    now_ts = time()
+    stale = String[]
+    for (id, (_, touched)) in hen_store
+        now_ts - touched > hen_ttl_s && push!(stale, id)
+    end
+    for id in stale
+        delete!(hen_store, id)
+    end
+    nothing
+end
+
+function store_hen!(hen::EI.HeatExchangerNetwork)::String
+    @lock hen_lock begin
+        _purge_expired_hens!()
+        id = string(uuid4())
+        hen_store[id] = (hen, time())
+        return id
+    end
+end
+
+function get_hen(id::AbstractString)::Union{Nothing,EI.HeatExchangerNetwork}
+    @lock hen_lock begin
+        _purge_expired_hens!()
+        entry = get(hen_store, String(id), nothing)
+        entry === nothing && return nothing
+        hen, _ = entry
+        hen_store[String(id)] = (hen, time())
+        return hen
+    end
+end
+
+function hen_id_from_payload(data)::Union{Nothing,String}
+    data isa AbstractDict || return nothing
+    haskey(data, "hen_id") || return nothing
+    return String(data["hen_id"])
 end
 
 function ei_unavailable_response()
@@ -25,9 +89,26 @@ function ei_unavailable_response()
         "message" => "EnergyIntegration is not available in the active project; run Julia with `--project=.` and ensure dependencies are instantiated.",
         "active_project" => Base.active_project(),
         "find_package" => Base.find_package("EnergyIntegration"),
-        "load_error" => EI_LOAD_ERROR[],
-    )
+        "load_error" => ei_load_error[])
     return Dict("ok" => false, "error" => err, "ts" => iso_ts())
+end
+
+function no_hen_response()
+    return Dict(
+        "ok" => false,
+        "error" => Dict(
+            "code" => "no_hen",
+            "message" => "No built HEN in server memory. Click Build HEN first."),
+        "ts" => iso_ts())
+end
+
+function missing_hen_id_response()
+    return Dict(
+        "ok" => false,
+        "error" => Dict(
+            "code" => "hen_id_required",
+            "message" => "hen_id is required for this request."),
+        "ts" => iso_ts())
 end
 
 function is_safe_id(id::AbstractString)
@@ -43,7 +124,7 @@ function is_safe_id(id::AbstractString)
 end
 
 function streamset_path(id::AbstractString)
-    return joinpath(STREAMSETS_DIR, "$(String(id)).json")
+    return joinpath(streamsets_dir, "$(String(id)).json")
 end
 
 function write_json_atomic(path::String, obj)
@@ -193,11 +274,12 @@ end
 
 @post "/api/streams" (req) -> begin
     try
-        EI_AVAILABLE[] || return ei_unavailable_response()
+        ei_available[] || return ei_unavailable_response()
         data = JSON.parse(String(req.body))
         streams = streams_from_payload(data)
         intervals_cfg = haskey(data, "intervals_config") ? intervals_config_from_payload(data["intervals_config"]) : IntervalsConfig()
-        LAST_HEN[] = hen = EI.build_hen(streams; config=intervals_cfg)
+        hen = EI.build_hen(streams; config=intervals_cfg)
+        hen_id = store_hen!(hen)
         EI.clog(:webapp, 0, "Built HEN with ", length(streams), " stream(s).")
         plot_payload = nothing
         plot_error = nothing
@@ -223,6 +305,7 @@ end
         T_last = n_nodes > 0 ? hen.T_nodes[end] : NaN
         return Dict(
             "ok" => true,
+            "hen_id" => hen_id,
             "n_streams" => length(streams),
             "names" => names,
             "hen" => Dict(
@@ -242,20 +325,16 @@ end
 
 @post "/api/solve" (req) -> begin
     try
-        EI_AVAILABLE[] || return ei_unavailable_response()
+        ei_available[] || return ei_unavailable_response()
 
         body_str = String(req.body)
-        isempty(strip(body_str)) || JSON.parse(body_str)
-        isassigned(LAST_HEN) || return Dict(
-            "ok" => false,
-            "error" => Dict(
-                "code" => "no_hen",
-                "message" => "No built HEN in server memory. Click Build HEN first.",
-            ),
-            "ts" => iso_ts(),
-        )
-
-        prob = LAST_HEN[]
+        payload = nothing
+        isempty(strip(body_str)) || (payload = JSON.parse(body_str))
+        hen_id = payload === nothing ? nothing : hen_id_from_payload(payload)
+        hen_id === nothing && (hen_id = query_param(req, "hen_id"))
+        hen_id === nothing && return missing_hen_id_response()
+        prob = get_hen(hen_id)
+        prob === nothing && return no_hen_response()
         cb = (cbtype::Cint, msg::Ptr{Cchar}, _) -> begin
             if cbtype == HiGHS.kHighsCallbackLogging || cbtype == HiGHS.kHighsCallbackMipLogging
                 msg == C_NULL || EI.clog(:opti, unsafe_string(msg))
@@ -265,9 +344,9 @@ end
         model_hook = (model) -> begin
             opt = JuMP.backend(model)
             JuMP.MOI.set(opt, HiGHS.CallbackFunction(Cint[
-                HiGHS.kHighsCallbackLogging,
-                HiGHS.kHighsCallbackMipLogging,
-            ]), cb)
+                    HiGHS.kHighsCallbackLogging,
+                    HiGHS.kHighsCallbackMipLogging,
+                ]), cb)
             nothing
         end
         hen_model = EI.solve_transp!(prob, HiGHS.Optimizer; model_hook)
@@ -291,6 +370,7 @@ end
 
         return Dict(
             "ok" => true,
+            "hen_id" => hen_id,
             "obj_value" => prob.result.obj_value,
             "hot_names" => hot_names,
             "cold_names" => cold_names,
@@ -306,15 +386,11 @@ end
 
 @get "/api/results/match" (req) -> begin
     try
-        EI_AVAILABLE[] || return ei_unavailable_response()
-        isassigned(LAST_HEN) || return Dict(
-            "ok" => false,
-            "error" => Dict(
-                "code" => "no_hen",
-                "message" => "No built HEN in server memory. Click Build HEN first.",
-            ),
-            "ts" => iso_ts(),
-        )
+        ei_available[] || return ei_unavailable_response()
+        hen_id = query_param(req, "hen_id")
+        hen_id === nothing && return missing_hen_id_response()
+        prob = get_hen(hen_id)
+        prob === nothing && return no_hen_response()
 
         hot_raw = query_param(req, "hot")
         cold_raw = query_param(req, "cold")
@@ -328,8 +404,6 @@ end
 
         hot = Symbol(HTTP.URIs.unescapeuri(String(hot_raw)))
         cold = Symbol(HTTP.URIs.unescapeuri(String(cold_raw)))
-        prob = LAST_HEN[]
-
         match = try
             prob.result.edges[hot, cold]
         catch
@@ -343,6 +417,7 @@ end
         data, rows, cols = EI._materialize(match.q)
         return Dict(
             "ok" => true,
+            "hen_id" => hen_id,
             "hot" => string(hot),
             "cold" => string(cold),
             "rows" => string.(rows),
@@ -357,15 +432,11 @@ end
 
 @get "/api/results/stream" req -> begin
     try
-        EI_AVAILABLE[] || return ei_unavailable_response()
-        isassigned(LAST_HEN) || return Dict(
-            "ok" => false,
-            "error" => Dict(
-                "code" => "no_hen",
-                "message" => "No built HEN in server memory. Click Build HEN first.",
-            ),
-            "ts" => iso_ts(),
-        )
+        ei_available[] || return ei_unavailable_response()
+        hen_id = query_param(req, "hen_id")
+        hen_id === nothing && return missing_hen_id_response()
+        prob = get_hen(hen_id)
+        prob === nothing && return no_hen_response()
 
         name_raw = query_param(req, "name")
         if name_raw === nothing
@@ -396,10 +467,10 @@ end
                 "ts" => iso_ts(),
             )
         end
-        prob = LAST_HEN[]
         q_str, describes, t_upper, t_lower = EI.show_result(prob, name; unit=unit, verbose=false)
         return Dict(
             "ok" => true,
+            "hen_id" => hen_id,
             "name" => string(name),
             "unit" => unit_label,
             "q_str" => q_str,

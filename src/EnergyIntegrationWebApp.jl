@@ -1,27 +1,47 @@
 module EnergyIntegrationWebApp
-using Oxygen, JSON, Dates, UUIDs, HTTP, HiGHS
+using Oxygen, JSON, Dates, UUIDs, HTTP, HiGHS, Artifacts, LazyArtifacts
 @oxidize
 export serve_webapp
 
-const EI_AVAILABLE = Ref(false)
-const EI_LOAD_ERROR = Ref{Union{Nothing,String}}(nothing)
+const ei_available = Ref(false)
+const ei_load_error = Ref{Union{Nothing,String}}(nothing)
 try
     import EnergyIntegration as EI
     using EnergyIntegration: JuMP, EIStream, IntervalsConfig, MVRConfig, ScalarSpec, ThermalKind, StreamKind, Energy, Flowrate
-    EI_AVAILABLE[] = true
+    ei_available[] = true
 catch e
-    EI_AVAILABLE[] = false
-    EI_LOAD_ERROR[] = sprint(showerror, e)
+    ei_available[] = false
+    ei_load_error[] = sprint(showerror, e)
 end
 
 include("backend/server.jl")
 
-const CONSOLE_LIFECYCLE = Oxygen.LifecycleMiddleware(;
+const webapp_artifact = "webapp_dist"
+const webapp_dist_env = "EIWEBAPP_DIST"
+
+function resolve_dist_dir(dist_dir::Union{Nothing,AbstractString}=nothing)::String
+    if dist_dir !== nothing
+        dir = String(dist_dir)
+    elseif haskey(ENV, webapp_dist_env) && !isempty(ENV[webapp_dist_env])
+        dir = ENV[webapp_dist_env]
+    else
+        try
+            dir = artifact"webapp_dist"
+        catch e
+            msg = "Web UI artifact not available. Set ENV[\"$(webapp_dist_env)\"] to a built dist directory or install the artifact."
+            throw(ArgumentError(msg * " (cause: " * sprint(showerror, e) * ")"))
+        end
+    end
+    isdir(dir) || throw(ArgumentError("Web UI dist directory not found: $(dir)"))
+    return dir
+end
+
+const console_lifecycle = Oxygen.LifecycleMiddleware(;
     middleware=identity,
     on_startup=() -> begin
         console_set_shutdown!(false)
         console_reset!()
-        if EI_AVAILABLE[]
+        if ei_available[]
             try
                 EI.clog(:webapp, 0, "Console tee enabled.")
             catch e
@@ -44,16 +64,21 @@ function serve_webapp(;
     metrics::Bool         = true,
     redirect_stdout::Bool = false,
     async::Bool           = false,
+    static::Bool          = true,
+    dist_dir::Union{Nothing,AbstractString} = nothing,
 )
     redirect_stdout && start_stdout_redirect()
-    serve(; host, port, docs, metrics, async, middleware=[CONSOLE_LIFECYCLE])
+    if static
+        mount_frontend!(resolve_dist_dir(dist_dir))
+    end
+    serve(; host, port, docs, metrics, async, middleware=[console_lifecycle])
 end
 
 function __init__()
-    CONSOLE_TEE[] = TeeIO(stderr, CONSOLE_IO)
-    if EI_AVAILABLE[]
+    console_tee[] = TeeIO(stderr, console_io)
+    if ei_available[]
         try
-            EI.set_sink!(CONSOLE_TEE[])
+            EI.set_sink!(console_tee[])
         catch e
             console_log("Console tee init failed: " * sprint(showerror, e))
         end

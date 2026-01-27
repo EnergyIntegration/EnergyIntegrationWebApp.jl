@@ -1,0 +1,7 @@
+[webapp_dist]
+git-tree-sha1 = "0850c7c44971faec40084e4018b1a03be81d985b"
+lazy = true
+
+    [[webapp_dist.download]]
+    sha256 = "2fd6306ec4a9ed1da2095d014b585bf38c43a9e2fab6231c20996456d756adb6"
+    url = "https://github.com/EnergyIntegration/EnergyIntegrationWebApp/releases/download/v0.1.0/EnergyIntegrationWebApp-0.1.0-dist.tar.gz"

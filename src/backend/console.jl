@@ -73,12 +73,12 @@ end
 Base.flush(io::TeeIO) = (flush(io.io1); flush(io.io2); nothing)
 Base.close(io::TeeIO) = nothing
 
-const CONSOLE_STATE = ConsoleState()
-const CONSOLE_IO = ConsoleIO(CONSOLE_STATE)
-const CONSOLE_TEE = Ref{TeeIO}(TeeIO(stderr, CONSOLE_IO))
-const CONSOLE_SHUTDOWN = Base.Threads.Atomic{Bool}(false)
-const CONSOLE_STREAM_LOCK = ReentrantLock()
-const CONSOLE_STREAMS = IdDict{HTTP.Stream,Nothing}()
+const console_state = ConsoleState()
+const console_io = ConsoleIO(console_state)
+const console_tee = Ref{TeeIO}(TeeIO(stderr, console_io))
+const console_shutdown = Base.Threads.Atomic{Bool}(false)
+const console_stream_lock = ReentrantLock()
+const console_streams = IdDict{HTTP.Stream,Nothing}()
 
 function start_stdout_redirect()
     pipe = redirect_stdout()
@@ -89,7 +89,7 @@ function start_stdout_redirect()
                 sleep(0.01)
                 continue
             end
-            write(CONSOLE_TEE[], bytes)
+            write(console_tee[], bytes)
         end
     catch
     end
@@ -97,22 +97,22 @@ function start_stdout_redirect()
 end
 
 function console_set_shutdown!(flag::Bool)
-    CONSOLE_SHUTDOWN[] = flag
+    console_shutdown[] = flag
     nothing
 end
 
 function _register_console_stream!(stream::HTTP.Stream)
-    @lock CONSOLE_STREAM_LOCK CONSOLE_STREAMS[stream] = nothing
+    @lock console_stream_lock console_streams[stream] = nothing
     nothing
 end
 
 function _unregister_console_stream!(stream::HTTP.Stream)
-    @lock CONSOLE_STREAM_LOCK delete!(CONSOLE_STREAMS, stream)
+    @lock console_stream_lock delete!(console_streams, stream)
     nothing
 end
 
 function console_close_all_streams!()
-    streams = @lock CONSOLE_STREAM_LOCK collect(keys(CONSOLE_STREAMS))
+    streams = @lock console_stream_lock collect(keys(console_streams))
     for s in streams
         try
             closewrite(s)
@@ -126,7 +126,7 @@ function console_close_all_streams!()
     nothing
 end
 
-function console_reset!(state::ConsoleState=CONSOLE_STATE)
+function console_reset!(state::ConsoleState=console_state)
     @lock state.lock begin
         empty!(state.lines)
         state.next_seq = 1
@@ -140,12 +140,12 @@ function console_log(state::ConsoleState, line::AbstractString)
     nothing
 end
 
-console_log(line::AbstractString) = console_log(CONSOLE_STATE, line)
+console_log(line::AbstractString) = console_log(console_state, line)
 
 console_ts() = Dates.format(now(UTC), dateformat"yyyy-mm-ddTHH:MM:SS.sssZ")
 
 @get "/api/console" () -> begin
-    lines = [Dict("seq" => seq, "line" => line) for (seq, line) in console_snapshot(CONSOLE_STATE)]
+    lines = [Dict("seq" => seq, "line" => line) for (seq, line) in console_snapshot(console_state)]
     return Dict("ok" => true, "lines" => lines, "ts" => console_ts())
 end
 
@@ -163,7 +163,7 @@ end
     write(stream, ": connected\n\n")
     flush(stream)
 
-    snap0 = console_snapshot(CONSOLE_STATE)
+    snap0 = console_snapshot(console_state)
     for (seq, line) in snap0
         write(stream, Oxygen.format_sse_message(line; id=string(seq)))
     end
@@ -173,8 +173,8 @@ end
         last_seq = isempty(snap0) ? 0 : snap0[end][1]
         last_ping_s = time()
         while true
-            CONSOLE_SHUTDOWN[] && break
-            snap = console_snapshot(CONSOLE_STATE)
+            console_shutdown[] && break
+            snap = console_snapshot(console_state)
             new_items = Tuple{Int,String}[]
             for item in snap
                 item[1] > last_seq && push!(new_items, item)
