@@ -310,6 +310,8 @@ function intervals_config_from_payload(cfg)
 end
 
 @post "/api/streams" (req) -> begin
+    err = require_api_key(req)
+    err === nothing || return err
     try
         ei_available[] || return ei_unavailable_response()
         data = JSON.parse(String(req.body))
@@ -361,6 +363,8 @@ end
 end
 
 @post "/api/solve" (req) -> begin
+    err = require_api_key(req)
+    err === nothing || return err
     try
         ei_available[] || return ei_unavailable_response()
 
@@ -380,6 +384,7 @@ end
         end
         model_hook = (model) -> begin
             opt = JuMP.backend(model)
+            JuMP.MOI.set(opt, JuMP.MOI.TimeLimitSec(), 60.0)
             JuMP.MOI.set(opt, HiGHS.CallbackFunction(Cint[
                     HiGHS.kHighsCallbackLogging,
                     HiGHS.kHighsCallbackMipLogging,
@@ -422,6 +427,8 @@ end
 end
 
 @get "/api/results/match" (req) -> begin
+    err = require_api_key(req)
+    err === nothing || return err
     try
         ei_available[] || return ei_unavailable_response()
         hen_id = query_param(req, "hen_id")
@@ -468,6 +475,8 @@ end
 end
 
 @get "/api/results/stream" req -> begin
+    err = require_api_key(req)
+    err === nothing || return err
     try
         ei_available[] || return ei_unavailable_response()
         hen_id = query_param(req, "hen_id")
@@ -522,6 +531,8 @@ end
 end
 
 @post "/api/streamsets" (req) -> begin
+    err = require_api_key(req)
+    err === nothing || return err
     try
         data = JSON.parse(String(req.body))
         id = string(uuid4())
