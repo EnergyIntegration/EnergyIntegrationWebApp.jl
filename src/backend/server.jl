@@ -1,12 +1,12 @@
 # uses: Oxygen, JSON, Dates, UUIDs, HTTP, EnergyIntegration (optional)
 
-include("console.jl")
-
 const hen_store = Dict{String,Tuple{EI.HeatExchangerNetwork,Float64}}()
 const hen_lock = ReentrantLock()
 const hen_ttl_s = 6 * 60 * 60.0
 const frontend_mounted = Ref(false)
 const frontend_dist_dir = Ref{Union{Nothing,String}}(nothing)
+
+include("console.jl")
 
 function mount_frontend!(dist_dir::AbstractString)
     frontend_mounted[] && return
@@ -45,6 +45,54 @@ function iso_ts()
     return Dates.format(now(UTC), dateformat"yyyy-mm-ddTHH:MM:SS.sssZ")
 end
 
+const API_KEY_ENV = "EIWEBAPP_API_KEY"
+
+function query_param_from_target(target::AbstractString, key::String)
+    parts = split(target, "?", limit=2)
+    length(parts) < 2 && return
+    for pair in split(parts[2], "&")
+        kv = split(pair, "=", limit=2)
+        if length(kv) == 2 && kv[1] == key
+            return kv[2]
+        end
+    end
+    nothing
+end
+
+function api_key_expected()
+    key = Base.get(ENV, API_KEY_ENV, "")
+    isempty(key) && return nothing
+    return String(key)
+end
+
+function api_key_from_req(req)
+    msg = req isa HTTP.Stream ? getproperty(req, :message) : req
+    key = HTTP.header(msg, "X-API-Key")
+    if key === nothing || isempty(String(key))
+        raw = query_param_from_target(String(getproperty(msg, :target)), "api_key")
+        raw === nothing && return nothing
+        return HTTP.URIs.unescapeuri(String(raw))
+    end
+    return String(key)
+end
+
+function auth_error_response(code::String, message::String)
+    return Dict("ok" => false, "error" => Dict("code" => code, "message" => message), "ts" => iso_ts())
+end
+
+function require_api_key(req)
+    expected = api_key_expected()
+    expected === nothing && return nothing
+    key = api_key_from_req(req)
+    if key === nothing || isempty(key)
+        return HTTP.Response(401, JSON.json(auth_error_response("api_key_required", "API key is required.")))
+    end
+    if key != expected
+        return HTTP.Response(401, JSON.json(auth_error_response("invalid_api_key", "Invalid API key.")))
+    end
+    nothing
+end
+
 function _purge_expired_hens!()
     now_ts = time()
     stale = String[]
@@ -69,7 +117,7 @@ end
 function get_hen(id::AbstractString)::Union{Nothing,EI.HeatExchangerNetwork}
     @lock hen_lock begin
         _purge_expired_hens!()
-        entry = get(hen_store, String(id), nothing)
+        entry = Base.get(hen_store, String(id), nothing)
         entry === nothing && return nothing
         hen, _ = entry
         hen_store[String(id)] = (hen, time())
@@ -136,18 +184,7 @@ function write_json_atomic(path::String, obj)
 end
 
 function query_param(req, key::String)
-    target = String(getproperty(req, :target))
-    parts = split(target, "?", limit=2)
-    if length(parts) < 2
-        return
-    end
-    for pair in split(parts[2], "&")
-        kv = split(pair, "=", limit=2)
-        if length(kv) == 2 && kv[1] == key
-            return kv[2]
-        end
-    end
-    nothing
+    return query_param_from_target(String(getproperty(req, :target)), key)
 end
 
 @get "/api/ping" () -> Dict("ok" => true, "ts" => iso_ts())

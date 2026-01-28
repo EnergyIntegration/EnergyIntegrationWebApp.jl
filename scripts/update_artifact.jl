@@ -2,6 +2,7 @@ using Downloads
 using Pkg
 using SHA
 using Tar
+using CodecZlib
 
 const ARTIFACT_NAME = "webapp_dist"
 const FRONTEND_REPO = "https://github.com/EnergyIntegration/EnergyIntegrationWebApp"
@@ -16,7 +17,9 @@ function resolve_url(arg::AbstractString)
 end
 
 function extract_tarball!(tarball::AbstractString, dest::AbstractString)
-    run(`tar -xzf $tarball -C $dest`)
+    open(tarball, "r") do io
+        Tar.extract(GzipDecompressorStream(io), dest)
+    end
 end
 
 function compute_sha256(path::AbstractString)

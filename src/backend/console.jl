@@ -1,4 +1,4 @@
-# uses: Dates, HTTP, Oxygen
+﻿# uses: Dates, HTTP, Oxygen
 
 @kwdef mutable struct ConsoleState
     lock::ReentrantLock = ReentrantLock()
@@ -144,12 +144,16 @@ console_log(line::AbstractString) = console_log(console_state, line)
 
 console_ts() = Dates.format(now(UTC), dateformat"yyyy-mm-ddTHH:MM:SS.sssZ")
 
-@get "/api/console" () -> begin
+@get "/api/console" req -> begin
+    auth = require_api_key(req)
+    auth === nothing || return auth
     lines = [Dict("seq" => seq, "line" => line) for (seq, line) in console_snapshot(console_state)]
     return Dict("ok" => true, "lines" => lines, "ts" => console_ts())
 end
 
 @stream "/api/console/stream" (stream::HTTP.Stream) -> begin
+    auth = require_api_key(stream)
+    auth === nothing || return auth
     HTTP.setheader(stream, "Access-Control-Allow-Origin" => "*")
     HTTP.setheader(stream, "Access-Control-Allow-Methods" => "GET")
     HTTP.setheader(stream, "Content-Type" => "text/event-stream")

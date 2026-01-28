@@ -1,7 +1,7 @@
 [webapp_dist]
-git-tree-sha1 = "0850c7c44971faec40084e4018b1a03be81d985b"
+git-tree-sha1 = "d20ec55ac7225961d7de9de993af2f0d1af58ce5"
 lazy = true
 
     [[webapp_dist.download]]
-    sha256 = "2fd6306ec4a9ed1da2095d014b585bf38c43a9e2fab6231c20996456d756adb6"
-    url = "https://github.com/EnergyIntegration/EnergyIntegrationWebApp/releases/download/v0.1.0/EnergyIntegrationWebApp-0.1.0-dist.tar.gz"
+    sha256 = "aab857e1fc842d8ffb4e0729f12810a424527246f37b6ed049901e5779272983"
+    url = "https://github.com/EnergyIntegration/EnergyIntegrationWebApp/releases/download/v0.1.1/EnergyIntegrationWebApp-0.1.1-dist.tar.gz"
