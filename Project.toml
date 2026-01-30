@@ -1,7 +1,7 @@
 name = "EnergyIntegrationWebApp"
 uuid = "a6bc986e-675b-4287-8dea-8a93b3f9a836"
 authors = ["karei <abcdvvvv@gmail.com>"]
-version = "0.1.0"
+version = "0.1.2"
 
 [deps]
 Artifacts = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
@@ -15,12 +15,11 @@ Oxygen = "df9a0d86-3283-4920-82dc-4555fc0d1d8b"
 UUIDs = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [compat]
-Dates = "1"
 HTTP = "1"
 HiGHS = "1"
 JSON = "1"
 Oxygen = "1"
-UUIDs = "1"
+EnergyIntegration = "0.0.1"
 julia = "1.10"
 
 [extras]
