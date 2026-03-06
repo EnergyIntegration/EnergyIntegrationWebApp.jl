@@ -1,0 +1,1873 @@
+{
+  "name": "20P2U",
+  "intervals_config": {
+    "forbidden_match": [],
+    "node_rule": "inout",
+    "T_interval_method": "default",
+    "T_nodes_specified_text": "",
+    "maxDeltaT": "",
+    "maxnumT": "",
+    "mvr_config": {
+      "method": "piecewise",
+      "mode": "polytropic",
+      "step_ratio": "0.007",
+      "isentropic_efficiency": "0.72",
+      "polytropic_efficiency": "0.75",
+      "mechanical_efficiency": "0.97"
+    },
+    "use_clapeyron": false
+  },
+  "streams": [
+    {
+      "id": "646958b7-a1ae-4ad4-988c-30b034152fe3",
+      "name": "H1",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "23100",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "576",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "437",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "8e435f1b-6064-4cd2-92f4-290390079fbf",
+      "name": "H2",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "15220",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "599",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "399",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "dc439475-94eb-4bd8-bd1b-82b424e1cb4d",
+      "name": "H3",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "15150",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "530",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "382",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "79115bf5-c884-4c9d-97db-bc139a546526",
+      "name": "H4",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "14760",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "449",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "237",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "d8c57d1e-deb1-4464-a55c-652903213257",
+      "name": "H5",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "10700",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "368",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "177",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "781ddac0-fd83-43d9-a9d9-cc3854e9d8ec",
+      "name": "H6",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "149600",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "121",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "114",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "149829e3-7e57-4fe4-b0d4-b875e029efda",
+      "name": "H7",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "258200",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "202",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "185",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "587ba5fa-55e7-4a10-9eda-60672ee0c7f9",
+      "name": "H8",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "8380",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "185",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "113",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "c59d10c8-0fb6-4500-b285-4b6bb9c0b428",
+      "name": "H9",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "59890",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "140",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "120",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "6f9d3e59-3953-4809-9502-c64d3e1137e5",
+      "name": "H10",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "165790",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "69",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "66",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "d286fdfe-f355-42cb-8d37-31a62543ed7d",
+      "name": "H11",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "8740",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "120",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "68",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "a450b26e-b610-4ef2-9a43-99ee3271bf4c",
+      "name": "H12",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "7620",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "67",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "35",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "1fe684be-eec3-4ea7-a052-986cdd174da1",
+      "name": "H13",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "21300",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "1034.5",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "576",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "142c5723-9398-4a9c-9ee8-d2debe1713e1",
+      "name": "C1",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "10610",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "123",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "343",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "7be7ee02-dc34-4f8a-a374-c5a3e42f8efc",
+      "name": "C2",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "6650",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "20",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "156",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.2",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "244a740a-14a8-4014-9b7d-d3ef7ab75ae4",
+      "name": "C3",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "3291000",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "156",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "157",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "2.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "73f3fafb-5250-4caf-91f7-c6e8a385d39b",
+      "name": "C4",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "26630",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "20",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "182",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.2",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "ac595fae-6375-42f9-bb62-d4691a4b3aa6",
+      "name": "C5",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "31190",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "182",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "318",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.2",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "3bf08a06-ba4d-4c53-be0d-b11712d6995b",
+      "name": "C6",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "4011830",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "318",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "320",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "2.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "ffae2708-f986-4080-bdff-5d903d86046a",
+      "name": "C7",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "fixed",
+        "unit": "mol/s",
+        "value": "17600",
+        "lo": "",
+        "hi": ""
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "322",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "923.78",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "0.06",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "0",
+        "unit": "-"
+      },
+      "pricing_basis": "Energy",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "d5f10520-ec1c-4b0b-8932-b95edd9b2712",
+      "name": "HU1",
+      "thermal": "hot",
+      "kind": "Common",
+      "F": {
+        "mode": "range",
+        "unit": "mol/s",
+        "value": "",
+        "lo": "0",
+        "hi": "20000000"
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "927",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "927",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "0.1",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "5.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "250",
+        "unit": "-"
+      },
+      "pricing_basis": "Flowrate",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    },
+    {
+      "id": "fa5d8fc7-cb4c-48c6-88d4-80a12d2ec23d",
+      "name": "CU1",
+      "thermal": "cold",
+      "kind": "Common",
+      "F": {
+        "mode": "range",
+        "unit": "mol/s",
+        "value": "",
+        "lo": "0",
+        "hi": "20000000"
+      },
+      "Tin": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "9",
+        "lo": "",
+        "hi": ""
+      },
+      "Tout": {
+        "mode": "fixed",
+        "unit": "°C",
+        "value": "17",
+        "lo": "",
+        "hi": ""
+      },
+      "Pin": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "Pout": {
+        "mode": "fixed",
+        "unit": "bar",
+        "value": "",
+        "lo": "",
+        "hi": ""
+      },
+      "fracText": "",
+      "useAdvancedHcoeff": false,
+      "Cp": {
+        "value": "0.001",
+        "unit": "kJ/(mol*K)"
+      },
+      "Hcoeff6": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ],
+      "Hvap": {
+        "value": "",
+        "unit": "kJ/mol"
+      },
+      "HTC": {
+        "value": "1.0",
+        "unit": "kW/(m^2*K)"
+      },
+      "Tcont": {
+        "value": "10",
+        "unit": "K"
+      },
+      "cost": {
+        "value": "25",
+        "unit": "-"
+      },
+      "pricing_basis": "Flowrate",
+      "min_TD": {
+        "value": "0",
+        "unit": "K"
+      },
+      "superheating_deg": {
+        "value": "0",
+        "unit": "K"
+      },
+      "subcooling_deg": {
+        "value": "0",
+        "unit": "K"
+      }
+    }
+  ],
+  "id": "9ff29324-e018-47e2-93fe-0eb1916ebcdd",
+  "saved_at": "2026-03-06T06:46:39Z",
+  "schema_version": "ei-stream-ui-v1"
+}
