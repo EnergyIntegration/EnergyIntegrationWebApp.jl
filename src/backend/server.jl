@@ -3,25 +3,41 @@
 const hen_store = Dict{String,Tuple{EI.HeatExchangerNetwork,Float64}}()
 const hen_lock = ReentrantLock()
 const hen_ttl_s = 6 * 60 * 60.0
-const frontend_mounted = Ref(false)
 const frontend_dist_dir = Ref{Union{Nothing,String}}(nothing)
 
 include("console.jl")
 
+"""
+    mount_frontend!(dist_dir)
+
+Set the frontend dist directory used by `frontend_file`.
+
+Design note:
+- We intentionally do not keep a separate `frontend_mounted` boolean.
+- `frontend_dist_dir[] === nothing` already means "unmounted".
+- `frontend_dist_dir[] !== nothing` already means "mounted".
+
+Using a single source of truth avoids state drift and keeps mount/unmount logic simple.
+"""
 function mount_frontend!(dist_dir::AbstractString)
-    frontend_mounted[] && return
     isdir(dist_dir) || throw(ArgumentError("Web UI dist directory not found: $(dist_dir)"))
-    assets_dir = joinpath(dist_dir, "assets")
-    isdir(assets_dir) && staticfiles(assets_dir, "assets")
-    frontend_dist_dir[] = dist_dir
-    frontend_mounted[] = true
+    frontend_dist_dir[] = abspath(String(dist_dir))
+    nothing
+end
+
+function unmount_frontend!()
+    frontend_dist_dir[] = nothing
     nothing
 end
 
 function frontend_file(path::AbstractString)
     dist_dir = frontend_dist_dir[]
     dist_dir === nothing && return HTTP.Response(503, "Web UI not configured.")
-    file_path = joinpath(dist_dir, path)
+    rel = String(path)
+    if isempty(rel) || startswith(rel, "/") || occursin("..", rel) || occursin('\\', rel)
+        return HTTP.Response(404, "Not Found")
+    end
+    file_path = joinpath(dist_dir, rel)
     isfile(file_path) || return HTTP.Response(404, "Not Found")
     return file(file_path)
 end
@@ -30,12 +46,85 @@ end
 @get "/vite.svg" () -> frontend_file("vite.svg")
 @get "/favicon.svg" () -> frontend_file("favicon.svg")
 @get "/favicon.ico" () -> frontend_file("favicon.ico")
+@get "/assets/**" req -> begin
+    req_path = HTTP.URI(String(getproperty(req, :target))).path
+    prefix = "/assets/"
+    startswith(req_path, prefix) || return HTTP.Response(404, "Not Found")
+    length(req_path) > length(prefix) || return HTTP.Response(404, "Not Found")
+    asset_rel = HTTP.URIs.unescapeuri(req_path[length(prefix)+1:end])
+    return frontend_file(joinpath("assets", asset_rel))
+end
 
 function plot_payload_from_plot(p)
     return Dict(
         "data" => getfield(p, :data),
         "layout" => getfield(p, :layout),
         "config" => getfield(p, :config))
+end
+
+function table_rows_from_columns(cols::Vector{Vector{Float64}})
+    isempty(cols) && return Vector{Vector{Float64}}()
+    n_rows = minimum(length.(cols))
+    rows = Vector{Vector{Float64}}(undef, n_rows)
+    for i in 1:n_rows
+        rows[i] = [cols[j][i] for j in eachindex(cols)]
+    end
+    return rows
+end
+
+function build_inspect_payload(prob::EI.HeatExchangerNetwork)
+    b = prob.buckets
+    cfg = prob.intervals_cfg
+    cc = prob.composite
+
+    pinch_K = Float64[]
+    for i in eachindex(cc.feasible_hc)
+        if cc.feasible_hc[i] == 0 && (cc.hot[i] != 0 || cc.cold[i] != 0)
+            push!(pinch_K, Float64(cc.T[i]))
+        end
+    end
+
+    t_nodes_K = Float64[Float64(x) for x in prob.T_nodes]
+
+    table_cols = String[String(k) for k in keys(prob.table.table)]
+    table_col_values = [Float64[Float64(x) for x in col] for col in values(prob.table.table)]
+    table_rows = table_rows_from_columns(table_col_values)
+
+    composite_cols = ["hot", "cold", "feasible_hc", "T"]
+    n_curve = minimum((length(cc.hot), length(cc.cold), length(cc.feasible_hc), length(cc.T)))
+    composite_rows = Vector{Vector{Float64}}(undef, n_curve)
+    for i in 1:n_curve
+        composite_rows[i] = [
+            Float64(cc.hot[i]),
+            Float64(cc.cold[i]),
+            Float64(cc.feasible_hc[i]),
+            Float64(cc.T[i]),
+        ]
+    end
+
+    return Dict(
+        "summary" => Dict(
+            "n_streams" => length(prob.streams),
+            "n_hot" => length(b.hot_all),
+            "n_cold" => length(b.cold_all),
+            "n_iso" => length(b.isothermal_streams),
+            "n_mvr" => length(b.mvr_streams),
+            "n_rk" => length(b.rankine_streams),
+            "n_mhp" => length(b.cchp_streams),
+            "method_tgrid" => string(cfg.T_interval_method),
+            "method_mvr" => string(cfg.mvr_config.method),
+            "pinch_K" => pinch_K,
+            "t_nodes_K" => t_nodes_K,
+        ),
+        "problem_table" => Dict(
+            "columns" => table_cols,
+            "rows" => table_rows,
+        ),
+        "composite_curve" => Dict(
+            "columns" => composite_cols,
+            "rows" => composite_rows,
+        ),
+    )
 end
 
 const streamsets_dir = joinpath(@__DIR__, "data", "streamsets")
@@ -342,6 +431,7 @@ end
         n_nodes = length(hen.T_nodes)
         T_first = n_nodes > 0 ? hen.T_nodes[1] : NaN
         T_last = n_nodes > 0 ? hen.T_nodes[end] : NaN
+        build_inspect = build_inspect_payload(hen)
         return Dict(
             "ok" => true,
             "hen_id" => hen_id,
@@ -355,6 +445,7 @@ end
             ),
             "plot" => plot_payload,
             "plot_error" => plot_error,
+            "build_inspect" => build_inspect,
             "ts" => iso_ts(),
         )
     catch e

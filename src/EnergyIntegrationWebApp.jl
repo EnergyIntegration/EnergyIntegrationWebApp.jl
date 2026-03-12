@@ -70,6 +70,8 @@ function serve_webapp(;
     redirect_stdout && start_stdout_redirect()
     if static
         mount_frontend!(resolve_dist_dir(dist_dir))
+    else
+        unmount_frontend!()
     end
     serve(; host, port, docs, metrics, async, middleware=[console_lifecycle])
 end
