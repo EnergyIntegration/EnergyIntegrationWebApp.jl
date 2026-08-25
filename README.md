@@ -6,6 +6,8 @@
 [![ColPrac: Contributor's Guide on Collaborative Practices for Community Packages](https://img.shields.io/badge/ColPrac-Contributor's%20Guide-blueviolet)](https://github.com/SciML/ColPrac)
 [![PkgEval](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/E/EnergyIntegrationWebApp.svg)](https://JuliaCI.github.io/NanosoldierReports/pkgeval_badges/E/EnergyIntegrationWebApp.html)
 
+> [!WARNING]
+> This repository is no longer maintained. Development has moved to the [new repository on Codeberg](https://codeberg.org/EnergyIntegration/EnergyIntegrationWebApp.jl).
 
 EnergyIntegrationWebApp.jl is the Julia backend service for the EnergyIntegration
 web UI. It exposes a JSON API for building and solving HEN problems and serves the
